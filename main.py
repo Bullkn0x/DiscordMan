@@ -43,11 +43,16 @@ async def on_message(message):
                 high, low= stockinfo['01. symbol'], stockinfo['05. price'],stockinfo['06. volume'], \
                            stockinfo['09. change'], stockinfo['10. change percent'], \
                            stockinfo['03. high'], stockinfo['04. low']
-                embed = discord.Embed(title="Stock", description=symbol, color=0x00ff00)
+                if float(change) > 0:
+                    embed = discord.Embed(title="Stock", description=symbol, color=0x00ff00)
+                else:
+                    embed = discord.Embed(title="Stock", description=symbol, color=0xBF270C)
+
                 embed.add_field(name="Price", value=f'${price}', inline=True)
                 embed.add_field(name="Volume", value=volume, inline=True)
                 embed.add_field(name="High", value=high, inline=True)
                 embed.add_field(name="Low", value=low, inline=True)
+
                 embed.add_field(name="Price Change", value=f'${change}', inline=True)
                 embed.add_field(name="% Change", value=percent_change, inline=True)
                 await message.channel.send(embed=embed)
@@ -56,12 +61,13 @@ async def on_message(message):
                 await message.channel.send('Invalid Stock Ticker. Ex: $FINDSTOCK AAPL')
         else:
             print(api_limit,'Failed')
-            await message.channel.send(f'Too Many Calls Please Wait {60-(datetime.datetime.now()-datetime.datetime.strptime(api_limit[1], "%Y-%m-%d %H:%M:%S")).seconds} seconds')
+            await message.channel.send('Too Many Calls Please Wait')
 
 
 
 
 
+api_limit = ExpiringDict(max_len=100, max_age_seconds=60)
 
 
 def getStockData(ticker):
@@ -71,12 +77,11 @@ def getStockData(ticker):
     json_data = json.loads(data)
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    api_limit[len(api_limit)+1]=st
+    api_limit[st]=1
     print(api_limit, len(api_limit), 'Succeeded')
     return json_data['Global Quote']
 
 
 
 
-api_limit = ExpiringDict(max_len=100, max_age_seconds=60)
 client.run(TOKEN)
