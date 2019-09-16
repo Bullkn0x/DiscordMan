@@ -56,13 +56,12 @@ async def on_message(message):
                 await message.channel.send('Invalid Stock Ticker. Ex: $FINDSTOCK AAPL')
         else:
             print(api_limit,'Failed')
-            await message.channel.send('Too Many Calls Please Wait')
+            await message.channel.send(f'Too Many Calls Please Wait {60-(datetime.datetime.now()-datetime.datetime.strptime(api_limit[1], "%Y-%m-%d %H:%M:%S")).seconds} seconds')
 
 
 
 
 
-api_limit = ExpiringDict(max_len=100, max_age_seconds=60)
 
 
 def getStockData(ticker):
@@ -79,4 +78,5 @@ def getStockData(ticker):
 
 
 
+api_limit = ExpiringDict(max_len=100, max_age_seconds=60)
 client.run(TOKEN)
