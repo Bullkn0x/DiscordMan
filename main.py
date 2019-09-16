@@ -72,7 +72,7 @@ def getStockData(ticker):
     json_data = json.loads(data)
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    api_limit[st]=1
+    api_limit[len(api_limit)+1]=st
     print(api_limit, len(api_limit), 'Succeeded')
     return json_data['Global Quote']
 
