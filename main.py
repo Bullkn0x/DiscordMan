@@ -63,24 +63,30 @@ async def on_message(message):
     if '$findcrypto' in message.content:
 
         cryptosymbol = message.content.replace(' ', '')[11:]
-        print(cryptosymbol, str(len(cryptosymbol)))
+        symbol = cryptosymbol.upper()
+        print(symbol, str(len(symbol)))
 
-        getCryptoData(cryptosymbol)
+        cryptoinfo = getCryptoData(symbol)
+        time = cryptoinfo['time']
+        currency = cryptoinfo['asset_id_quote']
+        rate= cryptoinfo['rate']
 
-        embed = discord.Embed(title="Crypto", description=cryptosymbol, color=0x00ff00)
-        embed.add_field(name="Time", value=1, inline=True)
-        embed.add_field(name="Currency", value=2, inline=True)
-        embed.add_field(name="Rate", value=3, inline=True)
+
+        embed = discord.Embed(title="Crypto", description=symbol, color=0x00ff00)
+        embed.add_field(name="Time", value=time, inline=True)
+        embed.add_field(name="Currency", value=currency, inline=True)
+        embed.add_field(name="Rate", value=rate, inline=True)
         await message.channel.send(embed=embed)
 
 
 api_limit = ExpiringDict(max_len=100, max_age_seconds=60)
 
 def getCryptoData(symbol):
-    url=f'http://rest-sandbox.coinapi.io/v1/exchangerate/{symbol}?apikey={CRYPTO_TOKEN}'
+    url=f'http://rest-sandbox.coinapi.io/v1/exchangerate/{symbol}/USD/?apikey={CRYPTO_TOKEN}'
     response = requests.get(url)
     data = response.text
-    print(data)
+    json_data = json.loads(data)
+    return json_data
 
 
 def getStockData(ticker):
