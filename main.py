@@ -68,9 +68,9 @@ async def on_message(message):
         getCryptoData(cryptosymbol)
 
         embed = discord.Embed(title="Crypto", description=cryptosymbol, color=0x00ff00)
-        embed.add_field(name="Volume", value=1, inline=True)
-        embed.add_field(name="High", value=2, inline=True)
-        embed.add_field(name="Low", value=3, inline=True)
+        embed.add_field(name="Time", value=1, inline=True)
+        embed.add_field(name="Currency", value=2, inline=True)
+        embed.add_field(name="Rate", value=3, inline=True)
         await message.channel.send(embed=embed)
 
 
