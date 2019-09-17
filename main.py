@@ -1,19 +1,39 @@
-# bot.py
 import os
 import requests, json, discord
 from dotenv import load_dotenv
-import threading
 import time
 import datetime
 from expiringdict import ExpiringDict
-
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 STOCK_TOKEN = os.getenv('STOCK_API_KEY')
 CRYPTO_TOKEN = os.getenv('CRYPTO_API_KEY')
+CRYPTO_NOMICS_TOKEN = os.getenv('CRYPTO_NOMICS_API_KEY')
 client = discord.Client()
+
+def getCryptoData(symbol):
+    # coinapi=f'http://rest-sandbox.coinapi.io/v1/exchangerate/{symbol}/USD/?apikey={CRYPTO_TOKEN}'
+    nomics=f'https://api.nomics.com/v1/currencies/ticker?key={CRYPTO_NOMICS_TOKEN}&ids={symbol}&interval=1d,30d&convert=USD&include-transparency=false'
+    response = requests.get(nomics)
+    data = response.text
+    json_data = json.loads(data)
+    return json_data[0]
+    # return json_data
+
+
+def getStockData(ticker):
+    url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={ticker}&interval=5min&apikey={STOCK_TOKEN}'
+    response = requests.get(url)
+    data = response.text
+    json_data = json.loads(data)
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    api_limit[st]=1
+    print(api_limit, len(api_limit), 'Succeeded')
+    return json_data['Global Quote']
+
 
 @client.event
 async def on_ready():
@@ -40,10 +60,11 @@ async def on_message(message):
                 high, low= stockinfo['01. symbol'], stockinfo['05. price'],stockinfo['06. volume'], \
                            stockinfo['09. change'], stockinfo['10. change percent'], \
                            stockinfo['03. high'], stockinfo['04. low']
+
+                colorformat = 0xBF270C
                 if float(change) >= 0:
-                    embed = discord.Embed(title="Stock", description=symbol, color=0x00ff00)
-                else:
-                    embed = discord.Embed(title="Stock", description=symbol, color=0xBF270C)
+                    colorformat= 0x00ff00
+                embed = discord.Embed(title="Stock", description=symbol, color=colorformat)
 
                 embed.add_field(name="Price", value=f'${price}', inline=True)
                 embed.add_field(name="Volume", value=volume, inline=True)
@@ -64,43 +85,38 @@ async def on_message(message):
 
         cryptosymbol = message.content.replace(' ', '')[11:]
         symbol = cryptosymbol.upper()
-        print(symbol, str(len(symbol)))
-
         cryptoinfo = getCryptoData(symbol)
-        time = cryptoinfo['time']
-        currency = cryptoinfo['asset_id_quote']
-        rate= cryptoinfo['rate']
+        name = cryptoinfo['name']
+        rank = cryptoinfo['rank']
+        # Pulls logo from online source with PNG because SVG is not compatible
+        icon = f'https://coincodex.com/en/resources/images/admin/coins/{name}.png'
 
+        time = cryptoinfo['price_date']
 
-        embed = discord.Embed(title="Crypto", description=symbol, color=0x00ff00)
-        embed.add_field(name="Time", value=time, inline=True)
-        embed.add_field(name="Currency", value=currency, inline=True)
-        embed.add_field(name="Rate", value=rate, inline=True)
+        # alter decimal based on price
+        decimalcount=2
+        if float(cryptoinfo['price']) < 1:
+            decimalcount = 6
+
+        price = round(float(cryptoinfo['price']), decimalcount)
+        price_change = round(float(cryptoinfo['1d']['price_change']),decimalcount)
+        percent_change = round(float(cryptoinfo['1d']['price_change_pct'])*100,2)
+        embed = discord.Embed(title="Rank Coin Symbol", description=f'#{rank} {name} ({symbol})', color=0x00ff00)
+        embed.set_thumbnail(url=icon)
+        embed.add_field(name="Date", value=time, inline=True)
+        embed.add_field(name="Price", value=f'${price}', inline=True)
+        embed.add_field(name="Change (24 Hr)", value=f'${price_change}', inline=True)
+        embed.add_field(name="% Change (24 Hr)", value=f'{percent_change}%', inline=True)
         await message.channel.send(embed=embed)
+
+
+
+
+
+
 
 
 api_limit = ExpiringDict(max_len=100, max_age_seconds=60)
 
-def getCryptoData(symbol):
-    url=f'http://rest-sandbox.coinapi.io/v1/exchangerate/{symbol}/USD/?apikey={CRYPTO_TOKEN}'
-    response = requests.get(url)
-    data = response.text
-    json_data = json.loads(data)
-    return json_data
-
-
-def getStockData(ticker):
-    url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={ticker}&interval=5min&apikey={STOCK_TOKEN}'
-    response = requests.get(url)
-    data = response.text
-    json_data = json.loads(data)
-    ts = time.time()
-    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    api_limit[st]=1
-    print(api_limit, len(api_limit), 'Succeeded')
-    return json_data['Global Quote']
-
-
-
-
-client.run(TOKEN)
+if __name__ == '__main__':
+    client.run(TOKEN)
