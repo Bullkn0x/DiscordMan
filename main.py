@@ -62,8 +62,10 @@ async def on_message(message):
                            stockinfo['03. high'], stockinfo['04. low']
 
                 colorformat = 0xBF270C
-                if float(change) >= 0:
+                diff='-'
+                if float(change) > 0:
                     colorformat= 0x00ff00
+                    diff='+'
                 embed = discord.Embed(title="Stock", description=symbol, color=colorformat)
 
                 embed.add_field(name="Price", value=f'${price}', inline=True)
@@ -71,8 +73,8 @@ async def on_message(message):
                 embed.add_field(name="High", value=high, inline=True)
                 embed.add_field(name="Low", value=low, inline=True)
 
-                embed.add_field(name="Price Change", value=f'${change}', inline=True)
-                embed.add_field(name="% Change", value=percent_change, inline=True)
+                embed.add_field(name="Price Change", value=f'```diff\n{diff}${change}\n```', inline=True)
+                embed.add_field(name="% Change", value=f'```diff\n{diff}{percent_change}\n```', inline=True)
                 await message.channel.send(embed=embed)
 
             except KeyError:
@@ -109,7 +111,12 @@ async def on_message(message):
         embed.add_field(name="% Change (24 Hr)", value=f'{percent_change}%', inline=True)
         await message.channel.send(embed=embed)
 
-
+    if message.content == '!help':
+        embed = discord.Embed(title="Help Menu", description='Here are a list of Commands and their uses', color=0x00ff00)
+        embed.add_field(name="```$findcrypto [Symbol]```", value='This will return daily information for the coin')
+        embed.add_field(name="```$findstock [Symbol]```", value='This will return daily information for the stock')
+        embed.add_field(name="```!help```", value='A manual for all of the bot functions ')
+        await message.channel.send(embed=embed)
 
 
 
