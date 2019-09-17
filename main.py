@@ -12,6 +12,7 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 STOCK_TOKEN = os.getenv('STOCK_API_KEY')
+CRYPTO_TOKEN = os.getenv('CRYPTO_API_KEY')
 client = discord.Client()
 
 @client.event
@@ -21,14 +22,13 @@ async def on_ready():
     print(f'{client.user} has connected to Discord!')
     members = '\n - '.join([member.name for member in guild.members])
     print(f'Guild Members:\n - {members}')
+
 @client.event
 async def on_message(message):
-
     if message.author == client.user:
         return
 
     if '$findstock' in message.content:
-
         # Remove whitespaces from input for exception handling
         ticker = message.content.replace(' ','')[10:]
         print(ticker, str(len(ticker)))
@@ -60,8 +60,27 @@ async def on_message(message):
             print(api_limit,'Failed')
             await message.channel.send('Too Many Calls Please Wait')
 
+    if '$findcrypto' in message.content:
+
+        cryptosymbol = message.content.replace(' ', '')[11:]
+        print(cryptosymbol, str(len(cryptosymbol)))
+
+        getCryptoData(cryptosymbol)
+
+        embed = discord.Embed(title="Crypto", description=cryptosymbol, color=0x00ff00)
+        embed.add_field(name="Volume", value=1, inline=True)
+        embed.add_field(name="High", value=2, inline=True)
+        embed.add_field(name="Low", value=3, inline=True)
+        await message.channel.send(embed=embed)
+
 
 api_limit = ExpiringDict(max_len=100, max_age_seconds=60)
+
+def getCryptoData(symbol):
+    url=f'http://rest-sandbox.coinapi.io/v1/exchangerate/{symbol}?apikey={CRYPTO_TOKEN}'
+    response = requests.get(url)
+    data = response.text
+    print(data)
 
 
 def getStockData(ticker):
