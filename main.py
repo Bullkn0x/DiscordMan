@@ -8,8 +8,6 @@ import datetime
 from expiringdict import ExpiringDict
 
 
-
-
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -29,21 +27,20 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if '$FINDSTOCK' in message.content:
+    if '$findstock' in message.content:
 
         # Remove whitespaces from input for exception handling
         ticker = message.content.replace(' ','')[10:]
         print(ticker, str(len(ticker)))
         if len(api_limit) < 5:
             try:
-
                 stockinfo = getStockData(ticker)
                 symbol, price, volume, \
                 change, percent_change, \
                 high, low= stockinfo['01. symbol'], stockinfo['05. price'],stockinfo['06. volume'], \
                            stockinfo['09. change'], stockinfo['10. change percent'], \
                            stockinfo['03. high'], stockinfo['04. low']
-                if float(change) > 0:
+                if float(change) >= 0:
                     embed = discord.Embed(title="Stock", description=symbol, color=0x00ff00)
                 else:
                     embed = discord.Embed(title="Stock", description=symbol, color=0xBF270C)
@@ -62,9 +59,6 @@ async def on_message(message):
         else:
             print(api_limit,'Failed')
             await message.channel.send('Too Many Calls Please Wait')
-
-
-
 
 
 api_limit = ExpiringDict(max_len=100, max_age_seconds=60)
