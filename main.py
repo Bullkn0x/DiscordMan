@@ -5,8 +5,10 @@ import time
 import datetime
 from expiringdict import ExpiringDict
 from bs4 import BeautifulSoup
+#from cryptoscrape import displayCrypto
 import requests
 from aws_scrape import getAWS
+
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -36,13 +38,6 @@ def getStockData(ticker):
     api_limit[st]=1
     print(api_limit, len(api_limit), 'Succeeded')
     return json_data['Global Quote']
-
-
-
-
-
-
-
 
 
 
@@ -144,10 +139,34 @@ async def on_message(message):
         embed.add_field(name="% Change (24 Hr)", value=f'{percent_change}%', inline=True)
         await message.channel.send(embed=embed)
 
+    #Lists the crypto currencies
+    if message.content =='!listcrypto':
+        loop = message.content.replace(' ', '')[11:]
+        info = f'https://api.nomics.com/v1/currencies/ticker?key={CRYPTO_NOMICS_TOKEN}&interval=1d,30d&convert=USD&include-transparency=false'
+        response = requests.get(info)
+        data = response.text
+        json_data = json.loads(data)
+        count = 1
+        embed = discord.Embed(title="Crypto Currency List", color=0x00ff00)
+        new=6
+        if loop:
+            new=int(loop)
+        for currency in json_data:
+            #print(currency['currency'], currency['name'])
+            embed.add_field(name="Symbol", value=f'{currency["currency\n"]}', inline=True)
+            embed.add_field(name="Name", value=f'{currency["name\n"]}', inline=True)
+            if count == new:
+                break
+            count += 1
+        await message.channel.send(embed=embed)
+
+
+    #Lists all the commands for the bot
     if message.content == '!help':
         embed = discord.Embed(title="Help Menu", description='Here are a list of Commands and their uses', color=0x00ff00)
         embed.add_field(name="```$findcrypto [Symbol]```", value='This will return daily information for the coin')
         embed.add_field(name="```$findstock [Symbol]```", value='This will return daily information for the stock')
+        embed.add_field(name="```!awsloft```", value='Lists the schedule for AWS loft located in lower Manhattan ', inline=False)
         embed.add_field(name="```!help```", value='A manual for all of the bot functions ', inline=False)
         await message.channel.send(embed=embed)
 
