@@ -171,7 +171,7 @@ async def on_message(message):
         embed = discord.Embed(title="Help Menu", description='Here are a list of Commands and their uses', color=0x00ff00)
         embed.add_field(name="```$findcrypto [Symbol]```", value='This will return daily information for the coin')
         embed.add_field(name="```$findstock [Symbol]```", value='This will return daily information for the stock')
-        embed.add_field(name="```!listcrypto```", value='Lists the top 8 Crypto Currencies ', inline=False)
+        embed.add_field(name="```!listcrypto```", value='Lists the top 3 Crypto Currencies ', inline=False)
         embed.add_field(name="```!listcrypto [Number]```", value='Lists the top [Number] Crypto Currencies ', inline=False)
         embed.add_field(name="```!awsloft```", value='Lists the schedule for AWS loft located in lower Manhattan ', inline=False)
         embed.add_field(name="```!help```", value='A manual for all of the bot functions ', inline=False)
