@@ -148,17 +148,21 @@ async def on_message(message):
         json_data = json.loads(data)
         count = 1
         embed = discord.Embed(title="Crypto Currency List", color=0x00ff00)
-        new=8
-
+        new=3
+        activate=True
         if loop:
-            new = int(loop)
-        for currency in json_data:
-            #print(currency['currency'], currency['name'])
-            embed.add_field(name="Symbol", value=f'{currency["currency"]}', inline=True)
-            embed.add_field(name="Name", value=f'{currency["name"]}', inline=False)
-            if count == new:
-                break
-            count += 1
+            if loop.isnumeric():
+                new = int(loop)
+            else:
+                activate=False
+        if activate:
+            for currency in json_data:
+                #print(currency['currency'], currency['name'])
+                embed.add_field(name="Symbol", value=f'{currency["currency"]}', inline=True)
+                embed.add_field(name="Name", value=f'{currency["name"]}', inline=False)
+                if count == new:
+                    break
+                count += 1
         await message.channel.send(embed=embed)
 
 
