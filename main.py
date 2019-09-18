@@ -38,6 +38,15 @@ def getStockData(ticker):
     return json_data['Global Quote']
 
 
+
+
+
+
+
+
+
+
+
 @client.event
 async def on_ready():
     for guild in client.guilds:
@@ -48,9 +57,10 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    # if '!delete' in message.content:
+    #     await message.channel.purge(limit=50)
     if message.author == client.user:
         return
-
     if '!awsloft' in message.content:
         upcoming_schedule = getAWS()
         first= upcoming_schedule[0][0].split('|')[0]
