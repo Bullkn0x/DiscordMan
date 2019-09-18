@@ -152,7 +152,6 @@ async def on_message(message):
 
         if loop:
             new = int(loop)
-
         for currency in json_data:
             #print(currency['currency'], currency['name'])
             embed.add_field(name="Symbol", value=f'{currency["currency"]}', inline=True)
@@ -169,6 +168,7 @@ async def on_message(message):
         embed.add_field(name="```$findcrypto [Symbol]```", value='This will return daily information for the coin')
         embed.add_field(name="```$findstock [Symbol]```", value='This will return daily information for the stock')
         embed.add_field(name="```!listcrypto```", value='Lists the top 8 Crypto Currencies ', inline=False)
+        embed.add_field(name="```!listcrypto [Number]```", value='Lists the top [Number] Crypto Currencies ', inline=False)
         embed.add_field(name="```!awsloft```", value='Lists the schedule for AWS loft located in lower Manhattan ', inline=False)
         embed.add_field(name="```!help```", value='A manual for all of the bot functions ', inline=False)
         await message.channel.send(embed=embed)
