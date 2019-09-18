@@ -140,7 +140,7 @@ async def on_message(message):
         await message.channel.send(embed=embed)
 
     #Lists the crypto currencies
-    if message.content =='!listcrypto':
+    if '!listcrypto' in message.content:
         loop = message.content.replace(' ', '')[11:]
         info = f'https://api.nomics.com/v1/currencies/ticker?key={CRYPTO_NOMICS_TOKEN}&interval=1d,30d&convert=USD&include-transparency=false'
         response = requests.get(info)
@@ -148,13 +148,15 @@ async def on_message(message):
         json_data = json.loads(data)
         count = 1
         embed = discord.Embed(title="Crypto Currency List", color=0x00ff00)
-        new=6
+        new=8
+
         if loop:
-            new=int(loop)
+            new = int(loop)
+
         for currency in json_data:
             #print(currency['currency'], currency['name'])
-            embed.add_field(name="Symbol", value=f'{currency["currency\n"]}', inline=True)
-            embed.add_field(name="Name", value=f'{currency["name\n"]}', inline=True)
+            embed.add_field(name="Symbol", value=f'{currency["currency"]}', inline=True)
+            embed.add_field(name="Name", value=f'{currency["name"]}', inline=False)
             if count == new:
                 break
             count += 1
@@ -166,6 +168,7 @@ async def on_message(message):
         embed = discord.Embed(title="Help Menu", description='Here are a list of Commands and their uses', color=0x00ff00)
         embed.add_field(name="```$findcrypto [Symbol]```", value='This will return daily information for the coin')
         embed.add_field(name="```$findstock [Symbol]```", value='This will return daily information for the stock')
+        embed.add_field(name="```!listcrypto```", value='Lists the top 8 Crypto Currencies ', inline=False)
         embed.add_field(name="```!awsloft```", value='Lists the schedule for AWS loft located in lower Manhattan ', inline=False)
         embed.add_field(name="```!help```", value='A manual for all of the bot functions ', inline=False)
         await message.channel.send(embed=embed)
