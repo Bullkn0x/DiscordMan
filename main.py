@@ -4,7 +4,9 @@ from dotenv import load_dotenv
 import time
 import datetime
 from expiringdict import ExpiringDict
-
+from bs4 import BeautifulSoup
+import requests
+from aws_scrape import getAWS
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -12,6 +14,7 @@ STOCK_TOKEN = os.getenv('STOCK_API_KEY')
 CRYPTO_TOKEN = os.getenv('CRYPTO_API_KEY')
 CRYPTO_NOMICS_TOKEN = os.getenv('CRYPTO_NOMICS_API_KEY')
 client = discord.Client()
+
 
 def getCryptoData(symbol):
     # coinapi=f'http://rest-sandbox.coinapi.io/v1/exchangerate/{symbol}/USD/?apikey={CRYPTO_TOKEN}'
@@ -48,10 +51,30 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+    if '!awsloft' in message.content:
+        upcoming_schedule = getAWS()
+        first= upcoming_schedule[0][0].split('|')[0]
+        last=upcoming_schedule[len(upcoming_schedule)-1][0].split('|')[0]
+        embed = discord.Embed(title="Upcoming AWS Schedule", description=f'{first}-{last} | [Link](<https://aws.amazon.com/start-ups/loft/ny-loft/>)')
+        count=1
+        spacer='----------------------------------------------------------------------------'
+        embed.add_field(name=f'{spacer}\nWeek #{count}', value=f'**{spacer}---**', inline=False)
+        for event in upcoming_schedule:
+            date=event[0]
+            title=event[1].split(':')[0]
+            link=event[2]
+            linktag=f' | [Event](<{link}>)'
+            if link == '':
+                linktag=''
+            embed.add_field(name=f'{date}', value=f'{title}{linktag}', inline=True)
+            if ('Friday' in date.split('|')[1] and count<4):
+                count+=1
+                embed.add_field(name=f'{spacer}\nWeek #{count}', value=f'**{spacer}---**', inline=False)
+        await message.channel.send(embed=embed)
+
     if '$findstock' in message.content:
         # Remove whitespaces from input for exception handling
         ticker = message.content.replace(' ','')[10:]
-        print(ticker, str(len(ticker)))
         if len(api_limit) < 5:
             try:
                 stockinfo = getStockData(ticker)
@@ -115,7 +138,7 @@ async def on_message(message):
         embed = discord.Embed(title="Help Menu", description='Here are a list of Commands and their uses', color=0x00ff00)
         embed.add_field(name="```$findcrypto [Symbol]```", value='This will return daily information for the coin')
         embed.add_field(name="```$findstock [Symbol]```", value='This will return daily information for the stock')
-        embed.add_field(name="```!help```", value='A manual for all of the bot functions ')
+        embed.add_field(name="```!help```", value='A manual for all of the bot functions ', inline=False)
         await message.channel.send(embed=embed)
 
 
