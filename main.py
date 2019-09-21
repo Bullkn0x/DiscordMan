@@ -40,8 +40,6 @@ def getStockData(ticker):
     return json_data['Global Quote']
 
 
-
-
 @client.event
 async def on_ready():
     for guild in client.guilds:
@@ -49,6 +47,15 @@ async def on_ready():
     print(f'{client.user} has connected to Discord!')
     members = '\n - '.join([member.name for member in guild.members])
     print(f'Guild Members:\n - {members}')
+
+@client.event
+async def on_member_join(member):
+    await member.create_dm()
+    await member.dm_channel.send(
+        f'Hi {member.name}, StockBot has been waiting for you!'
+    )
+
+
 
 @client.event
 async def on_message(message):
@@ -147,7 +154,9 @@ async def on_message(message):
         data = response.text
         json_data = json.loads(data)
         count = 1
-        embed = discord.Embed(title="Crypto Currency List", color=0x00ff00)
+        #embed = discord.Embed(title="Crypto Currency List", color=0x00ff00)
+        #await message.channel.send(embed=embed)
+        await message.channel.send('Top Crypto Currency List')
         new=3
         activate=True
         if loop:
@@ -156,14 +165,17 @@ async def on_message(message):
             else:
                 activate=False
         if activate:
+            #await message.channel.send('Symbol')
             for currency in json_data:
                 #print(currency['currency'], currency['name'])
-                embed.add_field(name="Symbol", value=f'{currency["currency"]}', inline=True)
-                embed.add_field(name="Name", value=f'{currency["name"]}', inline=False)
+                #embed.add_field(name="Symbol", value=f'{currency["currency"]}', inline=True)
+                #embed.add_field(name="Name", value=f'{currency["name"]}', inline=False)
+                await message.channel.send(str(count)+". " + f'{currency["currency"]}\t{currency["name"]}')
+
                 if count == new:
                     break
                 count += 1
-        await message.channel.send(embed=embed)
+
 
 
     #Lists all the commands for the bot
