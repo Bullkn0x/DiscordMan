@@ -1,7 +1,6 @@
 discord_backup_codes.txt
 access.json
 cryptoscrape.py
-image_bank/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
