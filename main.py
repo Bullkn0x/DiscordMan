@@ -201,6 +201,7 @@ async def on_message(message):
         embed.add_field(name="```!listcrypto```", value='Lists the top 3 Crypto Currencies ', inline=False)
         embed.add_field(name="```!listcrypto [Number]```", value='Lists the top [Number] Crypto Currencies ', inline=False)
         embed.add_field(name="```!awsloft```", value='Lists the schedule for AWS loft located in lower Manhattan ', inline=False)
+        embed.add_field(name="```!recognize [Image Url]```", value='Uses Machine Learning to Detect Objects in Image', inline=False)
         embed.add_field(name="```!help```", value='A manual for all of the bot functions ', inline=False)
         await message.channel.send(embed=embed)
 
