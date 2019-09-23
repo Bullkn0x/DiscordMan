@@ -7,7 +7,9 @@ from expiringdict import ExpiringDict
 from bs4 import BeautifulSoup
 #from cryptoscrape import displayCrypto
 import requests
+import re
 from aws_scrape import getAWS
+from content_detection.imagesave import imageSaver
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -63,6 +65,19 @@ async def on_message(message):
     #     await message.channel.purge(limit=50)
     if message.author == client.user:
         return
+
+    if '!recognize' in message.content:
+        # use regex to parse the url from the command
+        url = re.search("(?P<url>https?://[^\s]+)", message.content).group("url")
+        imageSaver(url)
+        from content_detection.imagedetect import imganalyze
+        imganalyze(f'{os.getcwd()}/content_detection/imagebank')
+        embed = discord.Embed(title="Analysis Photo", description='Object Name with Percentage of Confidence',color=0x00ff00)
+        file = discord.File(f'{os.getcwd()}/content_detection/imagebank/Analysedimage.jpg', filename="...")
+        await message.channel.send("content", file=file,embed=embed)
+
+
+
     if '!awsloft' in message.content:
         upcoming_schedule = getAWS()
         first= upcoming_schedule[0][0].split('|')[0]
