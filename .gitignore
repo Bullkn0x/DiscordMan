@@ -1,6 +1,7 @@
 discord_backup_codes.txt
 access.json
 cryptoscrape.py
+*.h5
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
