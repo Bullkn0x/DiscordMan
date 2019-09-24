@@ -8,9 +8,11 @@ from bs4 import BeautifulSoup
 #from cryptoscrape import displayCrypto
 import requests
 import re
+import random
+import string
 from aws_scrape import getAWS
 from content_detection.imagesave import imageSaver
-
+from  content_detection.s3upload import s3upload
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -72,9 +74,11 @@ async def on_message(message):
         imageSaver(url)
         from content_detection.imagedetect import imganalyze
         imganalyze(f'{os.getcwd()}/content_detection/imagebank')
+        rando_img_name =''.join(random.choice(string.ascii_lowercase) for i in range(10))
+        s3upload(rando_img_name)
         embed = discord.Embed(title="Analysis Photo", description='Object Name with Percentage of Confidence',color=0x00ff00)
-        file = discord.File(f'{os.getcwd()}/content_detection/imagebank/Analysedimage.jpg', filename="...")
-        await message.channel.send("content", file=file,embed=embed)
+        embed.set_image(url=f'https://discordimage.s3.amazonaws.com/{rando_img_name}.jpg')
+        await message.channel.send("content",embed=embed)
 
 
 
