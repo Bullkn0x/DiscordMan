@@ -1,10 +1,9 @@
 import os
-import requests, json, discord
+import json, discord
 from dotenv import load_dotenv
 import time
 import datetime
 from expiringdict import ExpiringDict
-from bs4 import BeautifulSoup
 #from cryptoscrape import displayCrypto
 import requests
 import re
@@ -13,6 +12,8 @@ import string
 from aws_scrape import getAWS
 from content_detection.imagesave import imageSaver
 from  content_detection.s3upload import s3upload
+from DiscordStockBot.liquipediascrape import getGameEvents
+
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -78,7 +79,27 @@ async def on_message(message):
         s3upload(rando_img_name)
         embed = discord.Embed(title="Analysis Photo", description='Object Name with Percentage of Confidence',color=0x00ff00)
         embed.set_image(url=f'https://discordimage.s3.amazonaws.com/{rando_img_name}.jpg')
-        await message.channel.send("content",embed=embed)
+        await message.channel.send(embed=embed)
+
+
+    if '!games' in message.content:
+        esport = message.content.split(' ')[1]
+        try:
+            matchups= getGameEvents(esport)
+        except Exception:
+            await message.channel.send('Please Input Valid Argument see !help for details')
+
+        embed = discord.Embed(title=f'Current {esport} Schedule', description='Scores and Upcoming Game events')
+        for matchup in matchups:
+            embed.add_field(name="Team 1", value=f'```{matchup["team_left"]}```', inline=True)
+            embed.add_field(name=f"({matchup['time']})", value=f'```{matchup["status"]}```', inline=True)
+            embed.add_field(name="Team 2", value=f'```{matchup["team_right"]}```', inline=True)
+
+        await message.channel.send(embed=embed)
+
+
+
+
 
 
 
