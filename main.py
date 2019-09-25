@@ -12,8 +12,8 @@ import string
 from aws_scrape import getAWS
 from content_detection.imagesave import imageSaver
 from  content_detection.s3upload import s3upload
-from DiscordStockBot.liquipediascrape import getGameEvents
-
+from liquipediascrape import getGameEvents
+from joke import get_joke
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -99,7 +99,9 @@ async def on_message(message):
 
 
 
-
+    if '!joke' in message.content:
+        joke=get_joke()
+        await message.channel.send(f'If you insist {str(message.author)[:-5]}...\n{joke} :smirk:')
 
 
 

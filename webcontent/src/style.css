@@ -41,6 +41,10 @@ body,
   font-weight: 700;
   src: url(https://discordapp.com/assets/2e004dd717cdc58b9ccb361d286ebbce.woff) format('woff')
 }
+
+video {
+  border-radius: 10px
+}
 .discordlogo{
   background-image:url(https://discordapp.com/assets/192cb9459cbc0f9e73e2591b700f1857.svg);
   width:250px;
@@ -94,6 +98,7 @@ body,
   font-weight:650;
   color:rgba(255,255,255,0.65);
   font-size:16px;
+  padding-top: 4px;
 }
 .highlight{
   background:rgba(255,255,255,0.1);
