@@ -32,13 +32,13 @@ This is a discord bot that gives real live data of
 
 ## Resources:
 
-* [Nomics](https://docs.nomics.com/#section/SDKs-and-Libraries/Community-Submissions) Crypto API used (NO Rate limit)
+* [Nomics](https://docs.nomics.com/#section/SDKs-and-Libraries/Community-Submissions) Crypto API used (No rate limit)
 
 * [AlphaVantage](https://www.alphavantage.co/) Stock API used (500 per day)
 
 * [Discord](https://discordapp.com/developers/docs/intro) Discord bot guide
 
-* [DarkSky](https://darksky.net/dev/docs#overview) Weather API used (1000 perday)
+* [DarkSky](https://darksky.net/dev/docs#overview) Weather API used (1000 per day)
 
 
 ## Invitation:
