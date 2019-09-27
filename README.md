@@ -19,6 +19,15 @@ This is a discord bot that gives real live data of
 
 *Tells jokes
 
+## Commands:
+
+* !help - Lists all the commands
+
+* !weather - current 5 day forecast
+
+* $findstock (symbol) - lists current price, high, low, change & etc.
+
+* $findcrypto (symbol) - lists price & etc.
 
 
 ## Resources:
@@ -30,3 +39,8 @@ This is a discord bot that gives real live data of
 * [Discord](https://discordapp.com/developers/docs/intro) Discord bot guide
 
 * [DarkSky](https://darksky.net/dev/docs#overview) Weather API used (1000 perday)
+
+
+## Invitation:
+
+To invite the bot click on this [link](https://discordapp.com/api/oauth2/authorize?client_id=623200683964891136&permissions=0&scope=bot)
