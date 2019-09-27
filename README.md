@@ -21,7 +21,7 @@ This is a discord bot that gives real live data of
 
 
 
-##Resources:
+## Resources:
 
 * [Nomics](https://docs.nomics.com/#section/SDKs-and-Libraries/Community-Submissions) Crypto API used (NO Rate limit)
 
