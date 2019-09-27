@@ -11,39 +11,21 @@ import re
 import random
 import string
 from aws_scrape import getAWS
+from crypto import getCryptoData
+from stock import getStockData
 from content_detection.imagesave import imageSaver
 from  content_detection.s3upload import s3upload
 from liquipediascrape import getGameEvents
 from joke import get_joke
+
+
 load_dotenv()
+
 TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
-STOCK_TOKEN = os.getenv('STOCK_API_KEY')
-CRYPTO_TOKEN = os.getenv('CRYPTO_API_KEY')
-CRYPTO_NOMICS_TOKEN = os.getenv('CRYPTO_NOMICS_API_KEY')
 client = discord.Client()
 
 
-def getCryptoData(symbol):
-    # coinapi=f'http://rest-sandbox.coinapi.io/v1/exchangerate/{symbol}/USD/?apikey={CRYPTO_TOKEN}'
-    nomics=f'https://api.nomics.com/v1/currencies/ticker?key={CRYPTO_NOMICS_TOKEN}&ids={symbol}&interval=1d,30d&convert=USD&include-transparency=false'
-    response = requests.get(nomics)
-    data = response.text
-    json_data = json.loads(data)
-    return json_data[0]
-    # return json_data
 
-
-def getStockData(ticker):
-    url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={ticker}&interval=5min&apikey={STOCK_TOKEN}'
-    response = requests.get(url)
-    data = response.text
-    json_data = json.loads(data)
-    ts = time.time()
-    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    api_limit[st]=1
-    print(api_limit, len(api_limit), 'Succeeded')
-    return json_data['Global Quote']
 
 
 @client.event
@@ -142,7 +124,7 @@ async def on_message(message):
         ticker = message.content.replace(' ','')[10:]
         if len(api_limit) < 5:
             try:
-                stockinfo = getStockData(ticker)
+                stockinfo = getStockData(ticker, api_limit)
                 symbol, price, volume, \
                 change, percent_change, \
                 high, low= stockinfo['01. symbol'], stockinfo['05. price'],stockinfo['06. volume'], \
