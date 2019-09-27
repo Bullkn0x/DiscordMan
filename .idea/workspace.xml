@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e418416c-b7a8-4af7-958b-1f86e5dc7952" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/weathercall.py" beforeDir="false" afterPath="$PROJECT_DIR$/weathercall.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -60,7 +61,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.weathercall">
+  <component name="RunManager" selected="Python.main">
     <configuration name="cryptoscrape" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="DiscordStockBot" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -168,10 +169,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.weathercall" />
         <item itemvalue="Python.video_stream" />
         <item itemvalue="Python.imagedetect" />
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.cryptoscrape" />
       </list>
     </recent_temporary>

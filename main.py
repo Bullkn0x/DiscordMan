@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import time
 import datetime
 from expiringdict import ExpiringDict
+from weathercall import weatherdata
 #from cryptoscrape import displayCrypto
 import requests
 import re
@@ -97,13 +98,9 @@ async def on_message(message):
 
         await message.channel.send(embed=embed)
 
-
-
     if '!joke' in message.content:
         joke=get_joke()
         await message.channel.send(f'If you insist {str(message.author)[:-5]}...\n{joke} :smirk:')
-
-
 
     if '!awsloft' in message.content:
         upcoming_schedule = getAWS()
@@ -161,7 +158,6 @@ async def on_message(message):
             await message.channel.send('Too Many Calls Please Wait')
 
     if '$findcrypto' in message.content:
-
         cryptosymbol = message.content.replace(' ', '')[11:]
         symbol = cryptosymbol.upper()
         cryptoinfo = getCryptoData(symbol)
@@ -219,7 +215,6 @@ async def on_message(message):
                 count += 1
 
 
-
     #Lists all the commands for the bot
     if message.content == '!help':
         embed = discord.Embed(title="Help Menu", description='Here are a list of Commands and their uses', color=0x00ff00)
@@ -233,8 +228,25 @@ async def on_message(message):
         await message.channel.send(embed=embed)
 
 
+    if message.content=='!weather':
+        weather = weatherdata()
+        for each in weather:
+            print(each)
+        embed = discord.Embed(title="Weather", description='Current 5 day forecast', color=0x00ff00)
+        embed.add_field(name="Current:", value=str(weather[0])[11:], inline=True)
+        embed.add_field(name="Temperature:", value=str(weather[1])+"°F", inline=True)
+        embed.add_field(name="Summary:", value=str(weather[2]), inline=True)
+        i=6
+        while i < len(weather):
+            embed.add_field(name="Date:", value=str(weather[i-3]), inline=False)
+            embed.add_field(name="High:", value=str(weather[i-1])+"°F", inline=True)
+            embed.add_field(name="Low:", value=str(weather[i])+"°F", inline=True)
+            embed.add_field(name="Summary:", value=str(weather[i - 2]), inline=True)
+            i+=4
+            if i>=24:
+                break
 
-
+        await message.channel.send(embed=embed)
 
 
 api_limit = ExpiringDict(max_len=100, max_age_seconds=60)
