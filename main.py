@@ -1,5 +1,5 @@
 import os
-import json, discord
+import json, discord, asyncio
 from dotenv import load_dotenv
 import time
 import datetime
@@ -48,11 +48,15 @@ def getStockData(ticker):
 
 @client.event
 async def on_ready():
-    for guild in client.guilds:
-        print (guild.name, guild.id)
     print(f'{client.user} has connected to Discord!')
-    members = '\n - '.join([member.name for member in guild.members])
-    print(f'Guild Members:\n - {members}')
+    for guild in client.guilds:
+        members = '\n - '.join([member.name for member in guild.members])
+        print(guild.name, guild.id)
+        print(f'Guild Members:\n - {members}')
+
+
+
+
 
 @client.event
 async def on_member_join(member):
@@ -65,10 +69,10 @@ async def on_member_join(member):
 
 @client.event
 async def on_message(message):
-    # if '!delete' in message.content:
-    #     await message.channel.purge(limit=50)
+
     if message.author == client.user:
         return
+
 
     if '!recognize' in message.content:
         # use regex to parse the url from the command
@@ -100,7 +104,17 @@ async def on_message(message):
 
     if '!joke' in message.content:
         joke=get_joke()
-        await message.channel.send(f'If you insist {str(message.author)[:-5]}...\n{joke} :smirk:')
+        await message.channel.send(f'If you insist {str(message.author)[:-5]}...\n{joke} :smirk: \n\n give me a 👍 or 👎 to let me know how I did')
+
+        def check(reaction, user):
+            return user == message.author and str(reaction.emoji) == '👍'
+
+        try:
+            reaction, user = await client.wait_for('reaction_add', timeout=30.0, check=check)
+        except asyncio.TimeoutError:
+            await message.channel.send('👎 ')
+        else:
+            await message.channel.send(':stuck_out_tongue_closed_eyes: That was a good one, That was a good one.  Ill keep it up')
 
     if '!awsloft' in message.content:
         upcoming_schedule = getAWS()
@@ -156,6 +170,8 @@ async def on_message(message):
         else:
             print(api_limit,'Failed')
             await message.channel.send('Too Many Calls Please Wait')
+
+
 
     if '$findcrypto' in message.content:
         cryptosymbol = message.content.replace(' ', '')[11:]
