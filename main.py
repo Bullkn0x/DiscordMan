@@ -18,15 +18,9 @@ from  content_detection.s3upload import s3upload
 from liquipediascrape import getGameEvents
 from joke import get_joke
 
-
 load_dotenv()
-
 TOKEN = os.getenv('DISCORD_TOKEN')
 client = discord.Client()
-
-
-
-
 
 @client.event
 async def on_ready():
@@ -36,10 +30,6 @@ async def on_ready():
         print(guild.name, guild.id)
         print(f'Guild Members:\n - {members}')
 
-
-
-
-
 @client.event
 async def on_member_join(member):
     await member.create_dm()
@@ -47,14 +37,11 @@ async def on_member_join(member):
         f'Hi {member.name}, StockBot has been waiting for you!'
     )
 
-
-
 @client.event
 async def on_message(message):
 
     if message.author == client.user:
         return
-
 
     if '!recognize' in message.content:
         # use regex to parse the url from the command
@@ -67,7 +54,6 @@ async def on_message(message):
         embed = discord.Embed(title="Analysis Photo", description='Object Name with Percentage of Confidence',color=0x00ff00)
         embed.set_image(url=f'https://discordimage.s3.amazonaws.com/{rando_img_name}.jpg')
         await message.channel.send(embed=embed)
-
 
     if '!games' in message.content:
         esport = message.content.split(' ')[1]
@@ -96,7 +82,7 @@ async def on_message(message):
         except asyncio.TimeoutError:
             await message.channel.send('👎 ')
         else:
-            await message.channel.send(':stuck_out_tongue_closed_eyes: That was a good one, That was a good one.  Ill keep it up')
+            await message.channel.send(':stuck_out_tongue_closed_eyes: That was a good one, That was a good one.  I\'ll keep it up')
 
     if '!awsloft' in message.content:
         upcoming_schedule = getAWS()
@@ -152,8 +138,6 @@ async def on_message(message):
         else:
             print(api_limit,'Failed')
             await message.channel.send('Too Many Calls Please Wait')
-
-
 
     if '$findcrypto' in message.content:
         cryptosymbol = message.content.replace(' ', '')[11:]
@@ -212,7 +196,6 @@ async def on_message(message):
                     break
                 count += 1
 
-
     #Lists all the commands for the bot
     if message.content == '!help':
         embed = discord.Embed(title="Help Menu", description='Here are a list of Commands and their uses', color=0x00ff00)
@@ -224,7 +207,6 @@ async def on_message(message):
         embed.add_field(name="```!recognize [Image Url]```", value='Uses Machine Learning to Detect Objects in Image', inline=False)
         embed.add_field(name="```!help```", value='A manual for all of the bot functions ', inline=False)
         await message.channel.send(embed=embed)
-
 
     if message.content=='!weather':
         weather = weatherdata()
@@ -243,9 +225,7 @@ async def on_message(message):
             i+=4
             if i>=24:
                 break
-
         await message.channel.send(embed=embed)
-
 
 api_limit = ExpiringDict(max_len=100, max_age_seconds=60)
 
