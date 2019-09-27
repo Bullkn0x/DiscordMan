@@ -3,21 +3,21 @@
 ## INTRODUCTION
 This is a discord bot that gives real live data of
 
-*Weather
+* Weather
 
-*Stock Info
+* Stock Info
 
-*Crypto Info
+* Crypto Info
 
-*Lists Top Crypto datas
+* Lists Top Crypto datas
 
 ## Additional Features:
 
-*Gives Schedule of AWS Loft
+* Gives Schedule of AWS Loft
 
-*Recognizes a photo for person/object
+* Recognizes a photo for person/object
 
-*Tells jokes
+* Tells jokes
 
 ## Commands:
 
