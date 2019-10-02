@@ -75,14 +75,20 @@ async def on_message(message):
         await message.channel.send(f'If you insist {str(message.author)[:-5]}...\n{joke} :smirk: \n\n give me a 👍 or 👎 to let me know how I did')
 
         def check(reaction, user):
-            return user == message.author and str(reaction.emoji) == '👍'
+            if reaction.emoji=='👍':
+                return user == message.author and str(reaction.emoji) == '👍'
+            else:
+                return user == message.author and str(reaction.emoji) == '👎'
 
         try:
             reaction, user = await client.wait_for('reaction_add', timeout=30.0, check=check)
         except asyncio.TimeoutError:
-            await message.channel.send('👎 ')
+            await message.channel.send(':weary:  👎 ')
         else:
-            await message.channel.send(':stuck_out_tongue_closed_eyes: That was a good one, That was a good one.  I\'ll keep it up')
+            if reaction.emoji== '👍':
+                await message.channel.send(':stuck_out_tongue_closed_eyes: That was a good one, That was a good one.  I\'ll keep it up')
+            elif reaction.emoji== '👎':
+                await message.channel.send(':weary: I got this next time! ')
 
     if '!awsloft' in message.content:
         upcoming_schedule = getAWS()
