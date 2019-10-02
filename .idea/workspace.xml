@@ -236,7 +236,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570029498505</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="formatting the weather output">
+      <created>1570030320311</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1570030320311</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -297,6 +304,7 @@
     <MESSAGE value="testing commit on pycharm" />
     <MESSAGE value="Adding Weather function to discord Bot" />
     <MESSAGE value="Adding a reaction to thumbsdown" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding a reaction to thumbsdown" />
+    <MESSAGE value="formatting the weather output" />
+    <option name="LAST_COMMIT_MESSAGE" value="formatting the weather output" />
   </component>
 </project>
