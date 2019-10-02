@@ -1,5 +1,5 @@
 import os
-import json, discord, asyncio
+import json, discord, asyncio, logging
 from dotenv import load_dotenv
 import time
 import datetime
@@ -226,9 +226,10 @@ async def on_message(message):
         embed.add_field(name="Temperature:", value=str(weather[1])+"°F", inline=True)
         embed.add_field(name="Summary:", value=str(weather[2]), inline=True)
         i=6
+        spacer = '----------------------------------------------------------------------------'
         while i < len(weather):
-            embed.add_field(name="Date:", value=str(weather[i-3]), inline=False)
-            embed.add_field(name="High:", value=str(weather[i-1])+"°F", inline=True)
+            embed.add_field(name=f"\n{spacer}\nDate:", value=str(weather[i-3]), inline=False)
+            embed.add_field(name=f"\n{spacer}\nHigh:", value=str(weather[i-1])+"°F", inline=True)
             embed.add_field(name="Low:", value=str(weather[i])+"°F", inline=True)
             embed.add_field(name="Summary:", value=str(weather[i - 2]), inline=True)
             i+=4
