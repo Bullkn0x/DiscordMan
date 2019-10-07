@@ -21,7 +21,7 @@ from joke import get_joke
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 client = discord.Client()
-
+CRYPTO_NOMICS_TOKEN = os.getenv('CRYPTO_NOMICS_API_KEY')
 
 def discordlogger():
     logging.basicConfig(level=logging.INFO)
@@ -231,8 +231,8 @@ async def on_message(message):
 
     if message.content=='!weather':
         weather = weatherdata()
-        for each in weather:
-            print(each)
+        # for each in weather:
+        #     print(each)
         embed = discord.Embed(title="Weather", description='Current 5 day forecast', color=0x00ff00)
         embed.add_field(name="Current:", value=str(weather[0])[11:], inline=True)
         embed.add_field(name="Temperature:", value=str(weather[1])+"°F", inline=True)
