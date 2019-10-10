@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e418416c-b7a8-4af7-958b-1f86e5dc7952" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/..env.swp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/..env.swp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -250,7 +251,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570039978791</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Removing print statement for weather, adding Crypto Token">
+      <created>1570464155529</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1570464155529</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -313,6 +321,7 @@
     <MESSAGE value="Adding a reaction to thumbsdown" />
     <MESSAGE value="formatting the weather output" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="Removing print statement for weather, adding Crypto Token" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removing print statement for weather, adding Crypto Token" />
   </component>
 </project>
