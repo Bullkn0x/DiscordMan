@@ -21,13 +21,13 @@ This is a discord bot that gives real live data of
 
 ## Commands:
 
-* !help - Lists all the commands
+* ```!help``` - Lists all the commands
 
-* !weather - current 5 day forecast
+* ```!weather``` - current 5 day forecast in NYC
 
-* $findstock (symbol) - lists current price, high, low, change & etc.
+* ```$findstock (symbol)``` - lists current price, high, low, change & etc.
 
-* $findcrypto (symbol) - lists price & etc.
+* ```$findcrypto (symbol)``` - lists price & etc.
 
 
 ## Resources:
