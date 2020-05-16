@@ -11,11 +11,12 @@ This is a discord bot that gives real live data of
 
 * Lists Top Crypto datas
 
+
 ## Additional Features:
 
 * Gives Schedule of AWS Loft
 
-* Recognizes a photo for person/object
+* Performs Image Recognition for Photos
 
 * Tells jokes
 
