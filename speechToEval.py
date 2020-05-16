@@ -32,6 +32,11 @@ def recognize_speech_from_mic(recognizer, microphone):
     return response
 
 
+def calculator(equation):
+    
+    return str(eval(equation))
+
+
 def calculate():
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
